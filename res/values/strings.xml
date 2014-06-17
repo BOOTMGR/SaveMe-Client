@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Save Me</string>
+    <string name="action_settings">Settings</string>
+    <string name="but_main">Send Beat</string>
+
+</resources>
