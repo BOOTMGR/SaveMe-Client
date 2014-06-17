@@ -116,12 +116,12 @@ public class MainActivity extends Activity {
 	 * Sends message to the server. Must be run in separate thread
 	 * Message format must be as follows
 	 * 
-     *      +---------+--------------+
-     *      | Address |    Message	 |
-     *      +---------+--------------+
-     *      
-     * with '|' as delimiter.
-	 * 
+	 *      +---------+--------------+
+	 *      | Address |    Message	 |
+	 *      +---------+--------------+
+	 *
+	 * with '|' as delimiter.
+	 *
 	 * @param msg message to be sent to server
 	 */
 	private void sendMsgToServer(String msg) {
