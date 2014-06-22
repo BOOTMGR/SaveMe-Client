@@ -174,6 +174,7 @@ public class MainActivity extends Activity {
 							e.printStackTrace();
 						}
 					}
+					isMessageLoopStarted = false;
 				}
 			}, "MessageLooperThread");
 			msgLooperThread.start();
