@@ -25,10 +25,13 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 import android.app.Activity;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.IBinder;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -59,11 +62,17 @@ public class MainActivity extends Activity {
 	// store position
 	public static String intermidiateLocation = "999,999";
 	
+	// thread for sending requests constantly
+	private static Thread msgLooperThread = null;
+	
 	// state of message loop thread
 	private static boolean isMessageLoopStarted = false;
 	
 	// UI Components
 	private Button hBeat;
+	
+	// LocationProvider service
+	private static boolean serviceBounded = false;
 	
 	// starts a new server & listens for incoming messages from server
 	private class AcknowledgeReceiver extends Thread {
@@ -151,7 +160,7 @@ public class MainActivity extends Activity {
 	 */
 	private void startMsgLoop() {
 		if(!isMessageLoopStarted) {
-			new Thread(new Runnable() {
+			msgLooperThread = new Thread(new Runnable() {
 				
 				@Override
 				public void run() {
@@ -162,18 +171,34 @@ public class MainActivity extends Activity {
 							Thread.sleep(3000);
 						} catch (InterruptedException e) {
 							Log.d(TAG, "startMsgLoop() " + e.toString());
+							e.printStackTrace();
 						}
 					}
 				}
-			}, "MessageLooperThread").start();
+			}, "MessageLooperThread");
+			msgLooperThread.start();
 		}
 	}
+	
+	ServiceConnection mConnection = new ServiceConnection() {
+		public void onServiceDisconnected(ComponentName name) {
+			// do nothing
+		}
+		
+		public void onServiceConnected(ComponentName name, IBinder service) {
+			// do nothing
+		}
+	};
 	
 	private OnClickListener beatSender = new OnClickListener() {
 		@Override
 		public void onClick(View arg0) {
 			// start location receiver service
 			startService(new Intent(MainActivity.this, LocationProviderService.class));
+			if(!serviceBounded) {
+				bindService(new Intent(MainActivity.this, LocationProviderService.class), mConnection, BIND_AUTO_CREATE);
+				serviceBounded = true;
+			}
 			hBeat.setBackgroundResource(R.drawable.custom_button_red);
 			new Thread(new Runnable() {
 				@Override
@@ -226,9 +251,17 @@ public class MainActivity extends Activity {
 	}
 	
 	@Override
+	public void onStop() {
+		super.onStop();
+	}
+	
+	@Override
 	public void onDestroy() {
 		// stop location receiver service
-		stopService(new Intent(MainActivity.this, LocationProviderService.class));
+		if(serviceBounded) {
+			unbindService(mConnection);
+			serviceBounded = false;
+		}
 		super.onDestroy();
 	}
 }

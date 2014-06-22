@@ -74,7 +74,6 @@ public class LocationProviderService extends Service implements LocationListener
 
 	@Override
 	public IBinder onBind(Intent arg0) {
-		
 		return null;
 	}
 
