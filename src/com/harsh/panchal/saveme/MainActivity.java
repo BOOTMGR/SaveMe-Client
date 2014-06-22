@@ -191,7 +191,7 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
-		Log.d(TAG, "SaveMe --> Created");
+		Log.d(TAG, "SaveMe --> Created(" + System.currentTimeMillis() + ")");
 		mContext = getApplicationContext();
 		hBeat = (Button) findViewById(R.id.but_send_beat);
 		TextView tv = (TextView) findViewById(R.id.textView1);
