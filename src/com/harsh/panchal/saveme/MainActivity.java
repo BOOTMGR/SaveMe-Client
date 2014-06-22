@@ -252,11 +252,6 @@ public class MainActivity extends Activity {
 	}
 	
 	@Override
-	public void onStop() {
-		super.onStop();
-	}
-	
-	@Override
 	public void onDestroy() {
 		// stop location receiver service
 		if(serviceBounded) {
