@@ -37,7 +37,7 @@ public class LocationProviderService extends Service implements LocationListener
 	
 	// parameters for GPS, Network positioning
 	private static final long DISTANCE_BETWEEN_UPDATES = 10;	// 10 meters
-	private static final long TIME_BETWEEN_UPDATES = 1000 * 60; // 1 minute
+	private static final long TIME_BETWEEN_UPDATES = 1000 * 30; // 30 seconds
 	private LocationManager locationManager;
 	private boolean isGPSenabled, isNetworkLocationEnabled;
 	
